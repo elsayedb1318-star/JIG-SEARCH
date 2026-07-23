@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JIG SEARCH</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#f5f5f5;
+}
+
+header{
+background:#2196F3;
+color:white;
+padding:18px;
+text-align:center;
+font-size:24px;
+font-weight:bold;
+}
+
+.container{
+max-width:600px;
+margin:30px auto;
+padding:15px;
+}
+
+input{
+width:100%;
+padding:15px;
+font-size:18px;
+border:none;
+border-bottom:2px solid #2196F3;
+outline:none;
+margin-bottom:15px;
+}
+
+button{
+width:100%;
+padding:15px;
+font-size:18px;
+background:#E8EAF6;
+border:none;
+border-radius:30px;
+cursor:pointer;
+}
+
+.card{
+background:white;
+padding:15px;
+margin-top:15px;
+border-radius:15px;
+box-shadow:0 2px 8px rgba(0,0,0,.2);
+}
+
+.card a{
+text-decoration:none;
+color:#000;
+font-size:17px;
+}
+</style>
+
+</head>
+<body>
+
+<header>JIG SEARCH</header>
+
+<div class="container">
+
+<input
+id="txt"
+placeholder="Enter Connector Number">
+
+<button onclick="search()">
+Search
+</button>
+
+<div id="results"></div>
+
+</div>
+
+<script>
+
+const API="https://script.google.com/macros/s/AKfycbwF8Iz9tcJRYl-YbkrSEAWhMgMqJVdRSY_EqSZhj-ozfjARQcb_by_moGAZuo0XkVK2/exec";
+
+async function search(){
+
+let q=document.getElementById("txt").value.trim();
+
+if(q==="") return;
+
+document.getElementById("results").innerHTML="Searching...";
+
+let res=await fetch(API+"?q="+encodeURIComponent(q));
+
+let data=await res.json();
+
+let html="";
+
+if(data.length===0){
+html="<div class='card'>No Results</div>";
+}else{
+
+data.forEach(f=>{
+
+html+=`
+<div class="card">
+<a href="${f.url}" target="_blank">
+📄 ${f.name}
+</a>
+</div>
+`;
+
+});
+
+}
+
+document.getElementById("results").innerHTML=html;
+
+}
+
+</script>
+
+</body>
+</html>
