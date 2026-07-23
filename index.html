@@ -90,7 +90,35 @@ Search
 
 const API="https://script.google.com/macros/s/AKfycbwF8Iz9tcJRYl-YbkrSEAWhMgMqJVdRSY_EqSZhj-ozfjARQcb_by_moGAZuo0XkVK2/exec";
 
-async function search(){
+async function search() {
+
+  const q = document.getElementById("txt").value.trim();
+
+  if (!q) return;
+
+  document.getElementById("results").innerHTML = "Searching...";
+
+  const API = "https://script.google.com/macros/s/AKfycbwF8Iz9tcJRYl-YbkrSEAWhMgMqJVdRSY_EqSZhj-ozfjARQcb_by_moGAZuo0XkVK2/exec";
+
+  const response = await fetch(API + "?q=" + encodeURIComponent(q));
+  const data = await response.json();
+
+  let html = "";
+
+  if (data.length === 0) {
+    html = "<div class='card'>No Results</div>";
+  } else {
+    data.forEach(file => {
+      html += `
+        <div class="card">
+          <a href="${file.url}" target="_blank">${file.name}</a>
+        </div>
+      `;
+    });
+  }
+
+  document.getElementById("results").innerHTML = html;
+}
 
 let q=document.getElementById("txt").value.trim();
 
